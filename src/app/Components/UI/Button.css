@@ -1,0 +1,9 @@
+.Button__container{
+    background-color: var(--secondary-background-color);
+    border: 2px solid var(--secondary-foreground-color);
+    margin: 5px;
+    height: 30px;
+    padding: 5px 10px;
+    border-radius: 15px;
+    cursor: pointer;
+}

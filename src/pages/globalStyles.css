@@ -1,0 +1,15 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: white;
+
+}
+
+:root{
+    --primary-background-gradient: linear-gradient(315deg, #000000 0%, #a29bfe 74%);
+    --primary-background-color: rgb(191, 172, 226);
+    --secondary-background-color: rgb(101, 93, 187);
+    --primary-foreground-color: rgb(101, 93, 187);
+    --secondary-foreground-color: rgb(236, 242, 255);
+}
