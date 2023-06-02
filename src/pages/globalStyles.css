@@ -2,14 +2,15 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    color: white;
+    color: black;
 
 }
 
 :root{
-    --primary-background-gradient: linear-gradient(315deg, #000000 0%, #a29bfe 74%);
-    --primary-background-color: rgb(191, 172, 226);
-    --secondary-background-color: rgb(101, 93, 187);
-    --primary-foreground-color: rgb(101, 93, 187);
-    --secondary-foreground-color: rgb(236, 242, 255);
+    --primary-background-gradient: rgb(196, 223, 223);
+    --primary-background-color: rgb(196, 223, 223);
+    --secondary-background-color: rgb(210, 233, 233);
+    --primary-foreground-color: rrgb(227, 244, 244);
+    --secondary-foreground-color: rgb(248, 246, 244);
+    --border-color: black;
 }

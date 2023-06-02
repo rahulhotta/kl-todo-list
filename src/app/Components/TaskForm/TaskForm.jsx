@@ -17,7 +17,7 @@ function Home() {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    bgcolor: "rgb(191, 172, 226)",
+    bgcolor: "rgb(196, 223, 223)  ",
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import "./TaskCard.css";
 import { taskContext } from "@/pages";
-import { deleteTaskFromList } from "@/Service/TaskServices";
+import { deleteTaskFromList, editTaskInList } from "@/Service/TaskServices";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Button from "../UI/Button";
@@ -16,7 +16,7 @@ function TaskCard(props) {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    bgcolor: "rgb(191, 172, 226)",
+    bgcolor: "rgb(196, 223, 223)",
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,
@@ -24,6 +24,10 @@ function TaskCard(props) {
   };
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [inputErrorMessage, setInputErroMessage] = useState("");
+  const [descErrorMessage, setDescErrorMessage] = useState("");
+  const [updatedTaskName, setUpdatedTaskName] = useState(props.task.taskName);
+  const [updatedTaskDesc, setUpdatedTaskDesc] = useState(props.task.taskDesc);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
   const { taskList, setTaskList } = useContext(taskContext);
@@ -32,6 +36,36 @@ function TaskCard(props) {
   const taskDeleteHandler = (id) => {
     deleteTaskFromList(id, taskList, setTaskList);
   };
+
+  const checkName = () => {
+    if (updatedTaskName.trim() === "") {
+      setInputErroMessage("Please Enter a name");
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const checkDesc = () => {
+    if (updatedTaskDesc.trim() === "") {
+      setDescErrorMessage("Please Enter a Description");
+      return false;
+    } else {
+      return true;
+    }
+  };
+  const updateHandler = () => {
+    let flag = true;
+    flag = checkName() && flag;
+    flag = checkDesc() && flag;
+    if (flag) {
+      let updatedData = {
+        taskName: updatedTaskName,
+        taskDesc: updatedTaskDesc,
+      };
+      editTaskInList(props.task.taskId, updatedData, taskList, setTaskList);
+    }
+  };
   return (
     <>
       <div
@@ -39,9 +73,13 @@ function TaskCard(props) {
         onDoubleClick={() => {
           taskDeleteHandler(props.task.taskId);
         }}
-        onClick={handleModalOpen}
+        onClick={() => {
+          setTimeout(() => {
+            handleModalOpen();
+          }, 250);
+        }}
       >
-        <div
+        <h3
           className={
             props.completed
               ? "taskCard__name taskCard__name_completed"
@@ -49,7 +87,7 @@ function TaskCard(props) {
           }
         >
           {props.task.taskName}
-        </div>
+        </h3>
         <div
           className={
             props.completed
@@ -67,14 +105,32 @@ function TaskCard(props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <input
+            type="text"
+            placeholder="Enter name of the task"
+            className="editform__name_input"
+            onChange={(e) => {
+              setUpdatedTaskName(e.target.value);
+            }}
+            value={updatedTaskName}
+          />
+          <div className="editform__name_error inputError">
+            {inputErrorMessage}
+          </div>
           <textarea
             placeholder="Enter the description of Task"
             id=""
             cols="30"
             rows="10"
-            className="form__modal_text_area"
+            className="editform__modal_text_area"
+            onChange={(e) => {
+              setUpdatedTaskDesc(e.target.value);
+            }}
+            value={updatedTaskDesc}
           ></textarea>
-          <div className="descError inputError"></div>
+          <div className="editform__desc_error inputError">
+            {descErrorMessage}
+          </div>
           <div>
             <Button
               onClick={() => {
@@ -84,7 +140,7 @@ function TaskCard(props) {
             >
               Cancel
             </Button>
-            <Button>Add Task</Button>
+            <Button onClick={updateHandler}>Add Task</Button>
           </div>
         </Box>
       </Modal>
