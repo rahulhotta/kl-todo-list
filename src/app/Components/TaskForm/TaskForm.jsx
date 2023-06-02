@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./TaskForm.css";
+import { taskContext } from "@/pages";
+import { addTaskToList } from "@/Service/TaskServices";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Button from "../UI/Button";
 function Home() {
+  const { taskList, setTaskList } = useContext(taskContext);
   const style = {
     position: "absolute",
     top: "50%",
@@ -24,16 +27,39 @@ function Home() {
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
-  const [taskName, setTaskName] = useState("");
-  const [inputError, setInputError] = useState("");
 
-  const addButtonHandler = () => {
-    if (taskName.trim() === "") {
+  
+  const [formTaskName, setFormTaskName] = useState("");
+  const [formTaskDesc, setFormTaskDesc] = useState("");
+  const [inputError, setInputError] = useState("");
+  const [descError, setDescError] = useState("");
+
+  // Function to handle add button click on home
+  const homeAddButtonHandler = () => {
+    if (formTaskName.trim() === "") {
       setInputError("Please Enter a name");
     } else {
       setInputError("");
       handleModalOpen();
     }
+  };
+
+  // Function to handle add button on form modal
+  const addNewTask = () => {
+    const newTaskId = new Date().getTime().toString();
+    const newTask = {
+      taskId: newTaskId,
+      taskName: formTaskName,
+      taskDesc: formTaskDesc,
+      taskCompleted: false,
+    };
+
+    // Using a function which was imported from TaskServices
+    addTaskToList(newTask, setTaskList);
+
+    setFormTaskName("");
+    setFormTaskDesc("");
+    handleModalClose();
   };
   return (
     <div className="form__container">
@@ -43,13 +69,13 @@ function Home() {
           className="form__name_input"
           placeholder="Name of the task"
           onChange={(e) => {
-            setTaskName(e.target.value);
+            setFormTaskName(e.target.value);
           }}
-          value={taskName}
+          value={formTaskName}
         />
-        <div className="form__name_input_error">{inputError}</div>
+        <div className="form__name_input_error inputError">{inputError}</div>
       </div>
-      <Button onClick={addButtonHandler}>Add</Button>
+      <Button onClick={homeAddButtonHandler}>Add</Button>
       <Modal
         open={modalOpen}
         onClose={handleModalClose}
@@ -63,10 +89,33 @@ function Home() {
             cols="30"
             rows="10"
             className="form__modal_text_area"
+            onChange={(e) => {
+              setFormTaskDesc(e.target.value);
+            }}
+            value={formTaskDesc}
           ></textarea>
+          <div className="descError inputError">{descError}</div>
           <div>
-            <Button onClick={handleModalClose}>Cancel</Button>
-            <Button>Add Task</Button>
+            <Button
+              onClick={() => {
+                setFormTaskDesc("");
+                handleModalClose();
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                if (formTaskDesc.trim() === "") {
+                  setDescError("Please enter a description");
+                } else {
+                  setDescError("");
+                  addNewTask();
+                }
+              }}
+            >
+              Add Task
+            </Button>
           </div>
         </Box>
       </Modal>

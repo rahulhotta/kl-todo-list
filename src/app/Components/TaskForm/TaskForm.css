@@ -22,7 +22,7 @@
     margin: 5px;
     background-color: var(--secondary-background-color); 
 }
-.form__name_input_error{
+.inputError{
     padding-left: 15px;
     color: rgb(221, 24, 24);
     font-size: 1.1rem;

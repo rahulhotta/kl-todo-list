@@ -6,7 +6,7 @@ function TaskList(props) {
     <div className='taskList__container'>
         {props.taskList.map((item)=>{
             return (
-                <TaskCard name={item.name} desc={item.desc} completed={completed}/>
+                <TaskCard key={item.taskId} task={item}/>
             )
         })}
     </div>
