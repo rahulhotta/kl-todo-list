@@ -5,6 +5,7 @@ import { deleteTaskFromList, editTaskInList } from "@/Service/TaskServices";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Button from "../UI/Button";
+import ReadMore from "../UI/Readmore/ReadMore";
 function TaskCard(props) {
   const style = {
     position: "absolute",
@@ -88,7 +89,7 @@ function TaskCard(props) {
         >
           {props.task.taskName}
         </h3>
-        <div
+        {/* <div
           className={
             props.completed
               ? "taskCard__desc taskCard__desc_completed"
@@ -96,6 +97,9 @@ function TaskCard(props) {
           }
         >
           {props.task.taskDesc}
+        </div> */}
+        <div className="taskCard__desc">
+          <ReadMore text={props.task.taskDesc} maxLength={50}/>
         </div>
       </div>
       <Modal
